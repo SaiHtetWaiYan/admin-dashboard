@@ -23,6 +23,13 @@
 
 ## Project setup
 
+Clone the repo locally:
+
+```sh
+git clone https://github.com/SaiHtetWaiYan/admin-dashboard.git admin-dashboard
+cd admin-dashboard
+```
+
 Install PHP dependencies:
 
 ```sh
