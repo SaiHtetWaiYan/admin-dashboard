@@ -4,6 +4,7 @@
     <img src="https://img.shields.io/github/license/SaiHtetWaiYan/admin-dashboard">
 </a>
 
+
 🧶 A application build with Laravel , Inertia.js , Vue.js and Tailwindcss  .
 
 ## Resources
