@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FallenHerosController;
 use App\Http\Controllers\ImagesController;
@@ -28,6 +29,22 @@ Route::get('login', [LoginController::class, 'showLoginForm'])
 Route::post('login', [LoginController::class, 'login'])
     ->name('login.attempt')
     ->middleware('guest');
+
+Route::get('forgotpassword', [ForgotPasswordController::class, 'showForgetPasswordForm'])
+    ->name('forgotpassword')
+    ->middleware('guest');  
+    
+Route::post('forgetpassword', [ForgotPasswordController::class, 'submitForgetPasswordForm'])
+    ->name('forgetpassword.attempt')
+    ->middleware('guest'); 
+
+Route::get('resetpassword/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])
+    ->name('resetpassword')
+    ->middleware('guest');
+
+Route::post('resetpassword', [ForgotPasswordController::class, 'submitResetPasswordForm'])
+    ->name('resetpassword.attempt')
+    ->middleware('guest');    
 
 Route::post('logout', [LoginController::class, 'logout'])
     ->name('logout');

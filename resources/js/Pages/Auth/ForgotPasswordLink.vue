@@ -5,9 +5,10 @@
     </div>
     <div class="container max-w-lg mx-auto flex-1 flex flex-col items-center justify-center sm:-mt-20 px-4">
       <div class="bg-white px-6 py-8 rounded shadow-md text-black w-full border-r-4 border-red-600">
-        <div v-if="$page.props.flash.success" class="text-center text-sm  text-green-500 pb-4"> 
-          <span >{{ $page.props.flash.success }}</span>
+        <div v-if="$page.props.flash.error" class="text-center text-sm  text-red-600 pb-4"> 
+          <span >{{ $page.props.flash.error }}</span>
         </div>
+        
         <h1 class="mb-8 text-3xl text-center" :class="form.errors.email || form.errors.password ? 'wrong' : ''">
           <svg version="1.0" xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 inline-flex" viewBox="0 0 100.000000 100.000000" preserveAspectRatio="xMidYMid meet">
               <g transform="translate(0.000000,100.000000) scale(0.100000,-0.100000)" fill="#ef4444" stroke="#ef4444">
@@ -17,15 +18,18 @@
             </svg>
         </h1>
         
-        <form  @submit.prevent="login" class="text-center">
+        <form  @submit.prevent="submit" class="text-center">
         <span class="text-red-500 text-sm " v-if="form.errors.email">{{form.errors.email}}</span>
-        <input  class="block border w-full p-3 rounded text-center mb-4" :class="form.errors.email ? 'border-red-500 mt-3' : ''" v-model="form.email" type="text" name="email" id="email" placeholder="Email" />
+        <input  class="block border w-full p-3 rounded text-center mb-4" :class="form.errors.email ? 'border-red-500 mt-3' : ''" v-model="form.email" type="text" name="email" id="email" placeholder="Enter Email Address...." />
         
         <span class="text-red-500 text-sm " v-if="form.errors.password">{{form.errors.password}}</span>
-        <input class="block border w-full p-3 rounded text-center mb-4" :class="form.errors.password ? 'border-red-500 mt-3' : ''" v-model="form.password" type="password" name="password" id="password" placeholder="Password" />
+        <input class="block border w-full p-3 rounded text-center mb-4" :class="form.errors.password ? 'border-red-500 mt-3' : ''" v-model="form.password" type="password" name="password" id="password" placeholder="New Password" />
         
-        <button type="submit" class="w-full uppercase text-center py-3 rounded bg-green text-white bg-red-500 hover:bg-red-600 focus:outline-none my-1 mb-4">Login</button>
-        <inertia-link :href="route('forgotpassword')" class="text-blue-500 hover:text-blue-700 text-sm "> Forgot Password ? </inertia-link>
+        <span class="text-red-500 text-sm " v-if="form.errors.password_confirmation">{{form.errors.password_confirmation}}</span>
+        <input class="block border w-full p-3 rounded text-center mb-4" :class="form.errors.password_confirmation ? 'border-red-500 mt-3' : ''" v-model="form.password_confirmation" type="password" name="password_confirmation" id="password_confirmation" placeholder="Confirm New Password" />
+        
+
+        <button type="submit" class="w-full uppercase text-center py-3 rounded bg-green text-white bg-red-500 hover:bg-red-600 focus:outline-none my-1 mb-4">Reset Password</button>
         </form>
       </div>
     </div>
@@ -35,30 +39,27 @@
 <script>
 import SwitchTheme from '@/Shared/SwitchTheme'
 export default {
-  metaInfo: { title: 'Login' },
+  metaInfo: { title: 'Forgot Password' },
   components: {
     SwitchTheme
   },
   props: {
     errors: Object,
+    token: String
   },
   data() {
     return {
       form: this.$inertia.form({
-        email: 'admin@admin.com',
-        password: 'password',
-        remember: false,
+        email: null,
+        password: null,
+        password_confirmation: null,
+        token: this.token
       }),
     }
   },
   methods: {
-    login() {
-      this.form
-        .transform((data) => ({
-          ...data,
-          remember: data.remember ? 'on' : '',
-        }))
-        .post(this.route('login.attempt'))
+    submit() {
+      this.form.post(this.route('resetpassword.attempt'))
     },
   },
 }
