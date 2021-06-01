@@ -12,10 +12,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\URL;
 use League\Glide\Server;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
-    use SoftDeletes, Authenticatable, Authorizable , HasRoles;
+    use HasFactory , SoftDeletes, Authenticatable, Authorizable , HasRoles ;
 
 
     public function setPasswordAttribute($password)

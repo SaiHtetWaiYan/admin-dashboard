@@ -14,6 +14,9 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use DB;
 use Spatie\Permission\Models\Permission;
+use App\Exports\UsersExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class UsersController extends Controller
 {
     function __construct()
@@ -23,6 +26,12 @@ class UsersController extends Controller
          $this->middleware('permission:user-edit', ['only' => ['update']]);
          $this->middleware('permission:user-own-edit', ['only' => ['edit','update']]);
          $this->middleware('permission:user-delete', ['only' => ['destroy','restore']]);
+    }
+
+    public function export($users) 
+    {    
+        $id = explode(",",$users);
+        return Excel::download(new UsersExport($id), 'users_list.xlsx');
     }
 
     public function index()
@@ -67,7 +76,7 @@ class UsersController extends Controller
             });
             $role = Role::pluck('name','name')->except('SuperAdmin')->all();
         }
-
+        $users_id = $query->get();
         return Inertia::render('Users/Index', [
             'users' => $query->paginate()
                              ->withQueryString()
@@ -81,7 +90,8 @@ class UsersController extends Controller
                                     'deleted_at' => $user->deleted_at,
                                 ];
                              }),
-            'roles' => $role,                 
+            'roles' => $role,
+            'users_id' => $users_id,              
             'filters' => request()->all(['search', 'field', 'trashed' , 'direction','role'])
         ]);
 

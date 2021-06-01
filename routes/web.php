@@ -80,6 +80,10 @@ Route::delete('users/{user}', [UsersController::class, 'destroy'])
 
 Route::put('users/{user}/restore', [UsersController::class, 'restore'])
     ->name('users.restore')
+    ->middleware('auth');  
+
+Route::get('users/{user}/export', [UsersController::class, 'export'])
+    ->name('users.export')
     ->middleware('auth');
 
 // Roles
@@ -88,12 +92,9 @@ Route::get('roles', [RolesController::class, 'index'])
     ->name('roles')
     ->middleware('remember', 'auth');
 
-
 Route::post('roles', [RolesController::class, 'store'])
     ->name('roles.store')
     ->middleware('auth');
-
-
 
 Route::put('roles/{role}', [RolesController::class, 'update'])
     ->name('roles.update')
@@ -102,8 +103,6 @@ Route::put('roles/{role}', [RolesController::class, 'update'])
 Route::delete('roles/{role}', [RolesController::class, 'destroy'])
     ->name('roles.destroy')
     ->middleware('auth');
-
-
 
 // Images
 

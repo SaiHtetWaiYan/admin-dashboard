@@ -12,21 +12,49 @@
       </ul>
     </div>
     <div class="mt-4">
-      <div class="mb-6 flex justify-between items-center">
-        <search-filter v-model="form.search" class="w-full max-w-md" @reset="reset">
-          <label class="block text-gray-700">Role:</label>
-          <select v-model="form.role" class="mt-1 w-full form-select rounded-md">
-            <option :value="null" />
-            <option v-for="role in roles" :key="role"   :value="role">{{ role}}</option>
-          </select>
-          <label class="mt-4 block text-gray-700">Trashed:</label>
-          <select v-model="form.trashed" class="mt-1 w-full form-select rounded-md">
-            <option :value="null" />
-            <option value="with">With Trashed</option>
-            <option value="only">Only Trashed</option>
-          </select>
-        </search-filter>
-        <CreateModal :roles="roles" v-if="$page.props.auth.user.permissions['user-create'] == 'user-create'"></CreateModal>
+      <div class="mb-6 flex items-center justify-between">
+        <div class="flex items-center">
+        <button class="px-6 py-3 mr-4 rounded bg-gray-600 text-white text-sm leading-4 font-bold whitespace-nowrap hover:shadow-lg hover:bg-gray-800 focus:outline-none inline-flex" v-on:click="filterbox = !filterbox">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" v-if="filterbox === false">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor" v-else>
+            <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd" />
+          </svg>
+          <span class="hidden md:inline">Filters</span>
+        </button>
+        <search-filter v-model="form.search" @reset="reset"></search-filter>
+        </div>
+        <div class="flex items-center">
+        <CreateModal :roles="roles" v-if="$page.props.auth.user.permissions['user-create'] == 'user-create'" class="flex justify-end"></CreateModal>
+        </div>
+      </div>
+      <div v-if="filterbox" class="p-6 bg-white rounded-md shadow-md">
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-6">
+          <div>
+            <label class="block text-gray-700">Role</label>
+            <select v-model="form.role" class="mt-1 w-full form-select rounded-md">
+              <option :value="null" />
+              <option v-for="role in roles" :key="role"   :value="role">{{ role}}</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-gray-700">Trashed</label>
+            <select v-model="form.trashed" class="mt-1 w-full form-select rounded-md">
+              <option :value="null" />
+              <option value="with">With Trashed</option>
+              <option value="only">Only Trashed</option> 
+            </select>
+          </div>
+          <div v-if="$page.props.auth.user.permissions['user-export'] == 'user-export'">
+            <label class="block text-gray-700">Export</label>
+            <select class="mt-1 w-full form-select rounded-md" @change="onChange($event)">
+              <option :value="null" />
+              <option value="one">Only One Page</option>
+              <option value="all">All Pages</option> 
+            </select>
+          </div>
+        </div>
       </div>
     </div>
     <div class="flex flex-col mt-8">
@@ -134,6 +162,7 @@ import CreateModal from '@/Pages/Users/CreateModal'
 import EditModal from '@/Pages/Users/EditModal'
 import DeleteModal from '@/Shared/DeleteModal'
 import RestoreModal from '@/Shared/RestoreModal'
+
 export default {
   metaInfo: { title: 'Users' },
   components: {
@@ -150,16 +179,18 @@ export default {
     users: Object,
     roles: Object,
     filters: Object,
+    users_id: Array
   },
   data() {
     return {
+      filterbox: false,
       reload: 0,
       form: {
         search: this.filters.search,
         trashed: this.filters.trashed,
         field: this.filters.field,
         direction: this.filters.direction,
-      },
+      }
     }
   },
   watch: {
@@ -190,6 +221,32 @@ export default {
     restore(value){
       this.$inertia.put(this.route('users.restore', value))
     },
+    fetchData(){
+      return this.users.data;
+    },
+    onChange(event){
+
+      if(event.target.value === "one")
+      {
+        var arr = [];
+        var len = this.users.data.length;
+        for (var i = 0; i < len; i++) {
+            arr.push(
+                this.users.data[i].id
+            );
+        }
+       
+        window.open(route('users.export',{user: arr}), "_blank");    
+    
+      }
+      if(event.target.value === "all")
+      {
+        
+        var arr = this.users_id.map(({ id }) => id)
+        window.open(route('users.export',{user: arr}), "_blank");    
+      }
+      
+    }
   },
 }
 </script>
