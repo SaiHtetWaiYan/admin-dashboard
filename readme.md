@@ -18,6 +18,10 @@
 
 ## Demo
 
+<a href="https://admin-dashboard.mylifemyway.site/" >
+    https://admin-dashboard.mylifemyway.site
+</a>
+
 ![](Demo.gif)
 
 
@@ -67,6 +71,19 @@ Connect to local database
 DB_DATABASE= database name
 DB_USERNAME= database user name
 DB_PASSWORD= database password
+```
+
+Connect to mail server for forgot password
+
+```sh
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.googlemail.com
+MAIL_PORT=587
+MAIL_USERNAME=your@gmail.com
+MAIL_PASSWORD=password
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=your@gmail.com
+MAIL_FROM_NAME=Admin-Dashboard
 ```
 
 Run database migrations:
