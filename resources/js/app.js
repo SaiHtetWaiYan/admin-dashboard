@@ -6,6 +6,9 @@ import { InertiaProgress } from '@inertiajs/progress/src'
 import VCalendar from 'v-calendar'
 
 Vue.config.productionTip = false
+Vue.config.devtools = false
+Vue.config.silent = true
+
 Vue.mixin({ methods: { route: window.route } })
 Vue.use(plugin)
 Vue.use(PortalVue)

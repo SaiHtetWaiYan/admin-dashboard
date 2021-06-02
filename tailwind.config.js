@@ -1,4 +1,4 @@
-const defaultTheme = require('tailwindcss/defaultTheme');
+const defaultTheme = require('tailwindcss/defaultTheme')
 
 whitelist = ["gray", "red", "orange", "yellow", "green", "teal", "blue", "purple", "pink"].reduce(
   (result, color) => result.push(`text-${color}-600`, `bg-${color}-600`, `bg-${color}-500`) && result, [])
@@ -6,7 +6,11 @@ whitelist = ["gray", "red", "orange", "yellow", "green", "teal", "blue", "purple
 module.exports = {
   purge: {
     enabled: process.env.NODE_ENV === 'production',
-    content: ['./index.html', './src/**/*.{vue, js}'],
+    content: [
+      './resources/**/*.blade.php',
+      './resources/**/*.js',
+      './resources/**/*.vue',
+    ],
     options: {
       whitelist,
     }
@@ -24,5 +28,5 @@ module.exports = {
     require('@tailwindcss/typography'),
     require('@tailwindcss/aspect-ratio'),
     require('daisyui')
-  ]
-};
+  ],
+}
