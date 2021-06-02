@@ -18,7 +18,7 @@
 
 ## Demo
 
-[https://admin-dashboard.mylifemyway.site](https://admin-dashboard.mylifemyway.site/)
+[https://admin-dashboard.mylifemyway.site](https://admin-dashboard.mylifemyway.site/) {:target="_blank"}
 
 
 ![](Demo.gif)
