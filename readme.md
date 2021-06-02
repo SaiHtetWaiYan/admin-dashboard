@@ -20,7 +20,8 @@
 
 <a href="https://admin-dashboard.mylifemyway.site/" target="_blank">
     https://admin-dashboard.mylifemyway.site
-</a><br>
+</a>/
+
 ![](Demo.gif)
 
 
