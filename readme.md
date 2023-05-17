@@ -18,7 +18,6 @@
 
 ## Demo
 
-[https://admin-dashboard.mylifemyway.site](https://admin-dashboard.mylifemyway.site/)
 
 
 ![](Demo.gif)
